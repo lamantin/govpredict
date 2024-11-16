@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+echo 'kill the scrapyd daemon and remove all process based items'
+read -r -p "Are you sure? [y/N] " response
+case "$response" in
+    [yY][eE][sS]|[yY]) 
+        kill -9 `pgrep -f scrapyd`
+rm twistd.pid
+rm -rf dbs;
+rm -rf eggs;
+rm -rf logs;
+cd setup;
+rm -rf build;
+rm -rf dist;
+rm -rf fara_foreign_principals.egg-info;
+cd fara_foreign_principals;
+rm *.pyc;
+cd spiders;
+rm *.pyc;
+cd ..
+
+echo  'bye'
+exit 1
+        ;;
+    *)
+        echo  'okay goodbye'
+        ;;
+esac
+

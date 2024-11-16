@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+echo 'Welcome in fara foreign principals project (govpredict)'
+
+if which python > /dev/null 2>&1;
+then
+	#Python is installed
+	python_version=`python --version 2>&1 | awk '{print $2}'`
+    echo "Python version $python_version is installed."
+    
+else
+    echo 'please install python'
+    exit 1
+fi
+if pip > /dev/null 2>&1;
+then
+	#pip is installed
+	pip_version=`pip -V 2>&1 | awk '{print $2}'`
+    echo "Pip version $pip_version is installed."
+    python setup/pip_install.py
+    cd setup;./egg
+    cd ..;
+    if which screen >> /dev/null 2>&1;
+    then screen -d -m scrapyd
+    wait
+    cd ..;
+
+    echo 'please check logs in your browser'
+    else
+    echo 'please install screen'
+	exit 1
+	fi
+else
+    echo 'please install python pip'
+    exit 1
+fi

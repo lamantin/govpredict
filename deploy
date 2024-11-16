@@ -1,0 +1,24 @@
+#!/bin/bash
+function getCon {
+  ps aux |grep /usr/local/bin/scrapyd | awk '{print $2}'| wc -l
+}
+counter=$(getCon)
+
+if (( counter > 1 ));
+then
+echo 'scrapyd is running'
+if which curl > /dev/null 2>&1;
+then
+
+curl http://127.0.0.1:6800/addversion.json -F project=govpredict -F version=r0.1 -F egg=@setup/dist/fara_foreign_principals-0.1-py2.7.egg;
+curl http://127.0.0.1:6800/schedule.json -d project=govpredict -d spider=clean
+    
+else
+    echo 'please install curl'
+    exit 1
+fi
+
+else
+    echo 'please  start scrapyd daemon'
+    exit 1
+fi
